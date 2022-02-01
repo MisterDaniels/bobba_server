@@ -1,0 +1,21 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+    bobba_db:
+        image: mysql:latest
+        command: --default-authentication-plugin=mysql_native_password
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - 3309:3306
+
+    bobba_db_ui:
+        image: adminer
+        restart: unless-stopped
+        depends_on:
+            - bobba_db
+        ports:
+            - 8090:8080
