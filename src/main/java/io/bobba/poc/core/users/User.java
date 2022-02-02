@@ -1,5 +1,8 @@
 package io.bobba.poc.core.users;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.bobba.poc.communication.outgoing.users.LoginOkComposer;
 import io.bobba.poc.communication.outgoing.users.UpdateCreditsBalanceComposer;
 import io.bobba.poc.core.gameclients.GameClient;
@@ -13,7 +16,7 @@ import io.bobba.poc.misc.logging.Logging;
 public class User {
 	private int id;
 	private int rank;
-	private int credits;
+	private Map<CoinType, Integer> coins = new HashMap<CoinType, Integer>();
 	private int homeRoomId;
 	private int loadingRoomId;
 	private String username;
@@ -72,12 +75,12 @@ public class User {
 	}
 	
 	public void setCredits(int credits) {
-		this.credits = credits;
+		this.coins.put(CoinType.Credit, credits);
 		client.sendMessage(new UpdateCreditsBalanceComposer(credits));
 	}
 	
-	public int getCredits() {
-		return credits;
+	public int getCredits(CoinType coinType) {
+		return coins.get(coinType);
 	}
 
 	public Inventory getInventory() {
@@ -105,7 +108,10 @@ public class User {
 		this.motto = motto;
 		this.look = look;
 		this.rank = 7;
-		this.credits = 1337;
+
+		this.coins.put(CoinType.Credit, 1337);
+		this.coins.put(CoinType.Pixel, 987);
+		
 		this.homeRoomId = 1;
 		this.loadingRoomId = 0;
 		this.client = client;
