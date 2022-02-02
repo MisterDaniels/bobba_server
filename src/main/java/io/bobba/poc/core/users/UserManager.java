@@ -44,7 +44,7 @@ public class UserManager {
             Logging.getInstance().writeLine(client.getUser().getUsername() + " (" + client.getUser().getId() + ") has logged in!", LogLevel.Verbose, this.getClass());           
 
             client.sendMessage(new LoginOkComposer(user.getId(), user.getUsername(), user.getLook(), user.getMotto()));
-            client.sendMessage(new UpdateCreditsBalanceComposer(user.getCredits()));
+            client.sendMessage(new UpdateCreditsBalanceComposer(user.getCredits(CoinType.Credit)));
             
             addDummyFriends(user);
         } else {

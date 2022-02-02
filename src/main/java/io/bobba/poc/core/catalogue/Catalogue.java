@@ -15,6 +15,7 @@ import io.bobba.poc.communication.outgoing.catalogue.CataloguePageComposer;
 import io.bobba.poc.communication.outgoing.catalogue.CataloguePurchaseErrorComposer;
 import io.bobba.poc.communication.outgoing.catalogue.CataloguePurchaseInformationComposer;
 import io.bobba.poc.core.items.BaseItem;
+import io.bobba.poc.core.users.CoinType;
 import io.bobba.poc.core.users.User;
 
 public class Catalogue {
@@ -108,11 +109,11 @@ public class Catalogue {
 		if (page != null && page.isEnabled() && page.isVisible() && page.getMinRank() <= user.getRank()) {
 			CatalogueItem item = page.getItem(itemId);
 			if (item != null) {
-				if (user.getCredits() < item.getCost()) {
+				if (user.getCredits(CoinType.Credit) < item.getCost()) {
 					user.getClient().sendMessage(new CataloguePurchaseErrorComposer());
 				} else {
 					user.getClient().sendMessage(new CataloguePurchaseInformationComposer(item));
-					user.setCredits(user.getCredits() - item.getCost());
+					user.setCredits(user.getCredits(CoinType.Credit) - item.getCost());
 					deliverItem(user, item.getBaseItem(), item.getAmount());
 				}
 			}
